@@ -1,107 +1,115 @@
-# Nero Membership Management
+# <img src="assets/media/logo.png" width="48" height="48" valign="middle"> Nero Membership Management
 
-A secure, decentralized membership platform built on **Nero Chain** EVM smart contracts. This application allows you to register members, manage membership tiers, renew subscriptions, and handle member suspensions all on-chain.
-
-## Features
-
-✨ **Key Capabilities:**
-
-- **Member Registration** - Register new members with name, email, membership tier, and join date
-- **Tier Management** - Upgrade members to higher tiers (Basic → Silver → Gold → Platinum)
-- **Subscription Renewal** - Extend membership expiration dates with automatic tracking
-- **Member Controls** - Suspend and reactivate member accounts (Admin only)
-- **Query Functions** - Look up individual members or view the complete member directory
-- **Wallet Integration** - Seamless MetaMask/EVM wallet connection
-
-## Technology Stack
-
-- **Blockchain**: Nero Chain (EVM Compatible)
-- **Smart Contracts**: Solidity ^0.8.24
-- **Frontend**: React 19 + Vite
-- **Wallet**: MetaMask / EVM Wallets
-- **Provider**: Ethers.js v6
-- **Development**: Hardhat
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+ and npm
-- MetaMask browser extension
-- NERO testnet tokens
-
-### Installation & Setup
-
-1. **Clone the repository:**
-```bash
-git clone <repository-url>
-cd steller-membership-management
-```
-
-2. **Install dependencies:**
-```bash
-npm install
-```
-
-3. **Configure Environment:**
-Create a `.env` file from the template:
-```bash
-cp .env.example .env
-```
-Add your private key to `.env`.
-
-4. **Deploy Smart Contract:**
-```bash
-npx hardhat run scripts/deploy.js --network neroTestnet
-```
-
-5. **Update Frontend:**
-Update `src/lib/nero.js` with your deployed contract address:
-```javascript
-export const CONTRACT_ADDRESS = "YOUR_CONTRACT_ADDRESS_HERE";
-```
-
-6. **Start Development Server:**
-```bash
-npm run dev
-```
-
-## Smart Contract
-
-The Solidity contract (`contracts/MembershipManagement.sol`) implements:
-
-- **Member Struct**: Stores member details, tier, status, and dates
-- **Membership Tiers**: Basic, Silver, Gold, Platinum
-- **Access Control**: Admin restricted functions for suspension and activation
-
-## Project Structure
-
-```
-steller-membership-management/
-├── contracts/             # Solidity smart contracts
-├── src/
-│   ├── App.jsx            # Main React component
-│   ├── App.css            # Application styling
-│   └── lib/
-│       └── nero.js        # Nero Chain integration (Ethers.js)
-├── hardhat.config.cjs     # Hardhat configuration
-├── package.json
-└── README.md
-```
-
-## Environment Variables
-
-| Variable | Description |
-| --- | --- |
-| `PRIVATE_KEY` | Your EVM wallet private key for deployment |
-
-## Security Considerations
-
-⚠️ **Important:**
-- Never share your private keys or commit `.env` files.
-- Test thoroughly on Nero Testnet before mainnet deployment.
-- Admin functions are restricted to the contract deployer address.
+A premium, decentralized membership ecosystem built on **Nero Chain** (EVM). This platform enables organizations to manage memberships with complete on-chain transparency, featuring multi-tier management, automated renewal tracking, and admin-controlled status management.
 
 ---
 
-**Built for the Nero Chain Track**
+## 🌟 Visual Preview
+
+### Dashboard Overview
+![Home Page](assets/media/home.png)
+
+### Core Features Demo
+![App Demo](assets/media/demo.webp)
+
+---
+
+## 🚀 Key Features
+
+- **Decentralized Registration**: On-board members with unique IDs, names, and contact details directly on the Nero blockchain.
+- **Dynamic Tier System**: Support for multiple membership levels (**Basic**, **Silver**, **Gold**, **Platinum**) with easy upgrading logic.
+- **Automated Renewals**: Transparent expiration tracking and one-click subscription renewals.
+- **Administrative Control**: Secure functions for suspending or reactivating members, restricted to the contract owner.
+- **Global Member Directory**: Instant access to the complete list of registered members and total membership counts.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+| --- | --- |
+| **Blockchain** | Nero Chain (EVM Compatible) |
+| **Smart Contracts** | Solidity ^0.8.24 |
+| **Frontend** | React 19 + Vite 6 |
+| **Styling** | Vanilla CSS (Premium Royal Theme) |
+| **Provider** | Ethers.js v6 |
+| **Development** | Hardhat |
+
+---
+
+## 📸 Snapshots
+
+| Registration Flow | Membership Controls |
+| --- | --- |
+| ![Register](assets/media/register.png) | ![Controls](assets/media/controls.png) |
+
+---
+
+## 📖 Getting Started
+
+### Prerequisites
+
+- **Node.js**: Version 18 or higher.
+- **Wallet**: MetaMask or any EVM-compatible wallet.
+- **Gas**: NERO testnet tokens for transactions. [Get them here](https://app.testnet.nerochain.io/faucet).
+
+### Installation
+
+1. **Clone the Project**:
+   ```bash
+   git clone https://github.com/PRATYAYCHATTERJEE/steller-membership-management.git
+   cd steller-membership-management
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**:
+   Create a `.env` file in the root directory:
+   ```env
+   PRIVATE_KEY=your_private_key_here
+   CONTRACT_ADDRESS=your_deployed_contract_address
+   ```
+
+### Smart Contract Deployment
+
+1. **Compile**:
+   ```bash
+   npx hardhat compile
+   ```
+
+2. **Deploy to Nero Testnet**:
+   ```bash
+   npx hardhat run scripts/deploy.cjs --network neroTestnet
+   ```
+
+### Running Locally
+
+1. **Start Dev Server**:
+   ```bash
+   npm run dev
+   ```
+
+2. **Open in Browser**: Navigate to `http://localhost:5173/`.
+
+---
+
+## 🏗️ Project Structure
+
+- `contracts/`: Solidity source code for the membership logic.
+- `scripts/`: Deployment and maintenance scripts (balance checks, verification).
+- `src/lib/nero.js`: Ethers.js integration for blockchain communication.
+- `assets/media/`: Visual assets, logo, and demo clips.
+
+---
+
+## 🛡️ Security
+
+- **Private Keys**: Never share your `.env` file. It is ignored by git for your protection.
+- **Admin Roles**: Only the contract deployer can suspend or activate members.
+
+---
+
+**Developed for the Nero Chain Ecosystem.**
