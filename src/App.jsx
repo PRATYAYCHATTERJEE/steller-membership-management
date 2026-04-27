@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { checkConnection, registerMember, upgradeTier, renewMembership, suspendMember, activateMember, getMember, listMembers, getMemberCount } from "./lib/stellar";
+import { checkConnection, registerMember, upgradeTier, renewMembership, suspendMember, activateMember, getMember, listMembers, getMemberCount } from "./lib/nero";
 import "./App.css";
 
 const nowTs = () => Math.floor(Date.now() / 1000);
@@ -19,10 +19,10 @@ const initialForm = () => ({
 
 const toOutput = (value) => {
     if (typeof value === "string") return value;
-    return JSON.stringify(value, null, 2);
+    return JSON.stringify(value, (key, val) => typeof val === "bigint" ? val.toString() : val, 2);
 };
 
-const truncateAddr = (addr) => addr ? addr.slice(0, 8) + "..." + addr.slice(-4) : "";
+const truncateAddr = (addr) => addr ? addr.slice(0, 6) + "..." + addr.slice(-4) : "";
 
 export default function App() {
     const [form, setForm] = useState(initialForm);
@@ -85,28 +85,25 @@ export default function App() {
         email: form.email.trim(),
         tier: form.tier.trim(),
         joinedAt: Number(form.joinedAt.trim() || nowTs()),
+        expiry: Number(form.newExpiry.trim() || oneYearFromNow()),
     }));
 
     const onUpgradeTier = () => runAction("upgradeTier", async () => upgradeTier({
         id: form.id.trim(),
-        member: form.member.trim(),
         newTier: form.newTier.trim(),
     }));
 
     const onRenew = () => runAction("renew", async () => renewMembership({
         id: form.id.trim(),
-        member: form.member.trim(),
         newExpiry: Number(form.newExpiry.trim() || oneYearFromNow()),
     }));
 
     const onSuspend = () => runAction("suspend", async () => suspendMember({
         id: form.id.trim(),
-        admin: form.admin.trim(),
     }));
 
     const onActivate = () => runAction("activate", async () => activateMember({
         id: form.id.trim(),
-        admin: form.admin.trim(),
     }));
 
     const onGetMember = () => runAction("getMember", async () => getMember(form.id.trim()));
@@ -135,8 +132,8 @@ export default function App() {
                     <div className="logo-section">
                         <span className="logo-icon">👑</span>
                         <div className="logo-text">
-                            <h1 className="app-title">Stellar Membership</h1>
-                            <p className="logo-subtitle">Soroban Smart Contract</p>
+                            <h1 className="app-title">Nero Membership</h1>
+                            <p className="logo-subtitle">EVM Smart Contract</p>
                         </div>
                     </div>
                     <div className="wallet-bar-inline">
@@ -161,9 +158,9 @@ export default function App() {
             <section className="hero">
                 <div className="hero-content">
                     <span className="hero-icon">🏆</span>
-                    <h2 className="hero-title">Membership Management On-Chain</h2>
+                    <h2 className="hero-title">Nero Membership Management</h2>
                     <p className="hero-description">
-                        A secure, decentralized membership platform built on Stellar's Soroban smart contracts. Register members, manage tiers, renew subscriptions, and handle suspensions with complete on-chain transparency.
+                        A secure, decentralized membership platform built on Nero Chain's EVM smart contracts. Register members, manage tiers, renew subscriptions, and handle suspensions with complete on-chain transparency.
                     </p>
                     <div className="hero-features">
                         <div className="feature-item">
@@ -218,9 +215,9 @@ export default function App() {
                             <span className="helper">Unique identifier, max 32 characters</span>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="member">Member Address</label>
-                            <input id="member" name="member" value={form.member} onChange={setField} placeholder="G..." />
-                            <span className="helper">Stellar public key starting with G...</span>
+                            <label htmlFor="member">Member Wallet Address</label>
+                            <input id="member" name="member" value={form.member} onChange={setField} placeholder="0x..." />
+                            <span className="helper">EVM wallet address starting with 0x...</span>
                         </div>
                         <div className="form-group">
                             <label htmlFor="name">Full Name</label>
@@ -293,11 +290,7 @@ export default function App() {
 
                         <div className="control-block">
                             <span className="label-text">Suspend Member</span>
-                            <div className="form-group">
-                                <label htmlFor="admin">Admin Address</label>
-                                <input id="admin" name="admin" value={form.admin} onChange={setField} placeholder="G..." />
-                                <span className="helper">Stellar public key starting with G...</span>
-                            </div>
+                            <p style={{ fontSize: "0.82rem", color: "#78716c", marginBottom: "1rem" }}>Temporarily disable a member's access (Admin Only).</p>
                             <button
                                 type="button"
                                 className={btnClass("suspend", `btn btn-danger-outline${confirmAction === "suspend" ? " btn-confirm-pulse" : ""}`)}
@@ -310,7 +303,7 @@ export default function App() {
 
                         <div className="control-block">
                             <span className="label-text">Activate Member</span>
-                            <p style={{ fontSize: "0.82rem", color: "#78716c" }}>Reactivate a previously suspended membership.</p>
+                            <p style={{ fontSize: "0.82rem", color: "#78716c", marginBottom: "1rem" }}>Reactivate a previously suspended membership (Admin Only).</p>
                             <button type="button" className={btnClass("activate", "btn btn-warning")} onClick={onActivate} disabled={isBusy}>Activate Member</button>
                         </div>
                     </div>
